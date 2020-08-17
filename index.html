@@ -11,31 +11,44 @@
 		
 		<script>
 		function init() {
-			checkVideo();
+			checkVideos();
 		}
-		function checkVideo() {
+		function checkVideos() {
+			for (var i = 1; i < 5; i++) {
+				checkForDay(i);
+			}
+		};
+		function checkForDay(day) {
 			$(".loading_spinner").show();
 			$.ajax({
-				url:"code_checker.php?day=4", //Day 4 is likely to be trailer day, so only check that.
+				url:"code_checker.php?day=" + day,
 				dataType: 'json',
 				mimeType: 'multipart/form-data',
 				contentType: false,
 				cache: false,
 				processData: false,
 				success:function(data){
-					$(".loading_spinner").hide();
-					$(".update_time").html(new Date($.now()));
-					if (data["videoUrl"] != null) {
+					var thisStorageDay = "day_" + day + "_video";
+					if (data["videoUrl"] != null && window.localStorage.getItem(thisStorageDay) != "1") {
+						if (day != 4) window.localStorage.setItem(thisStorageDay, "1");
+						alert("An ARG video is now available!");
 						window.location.href = data["videoUrl"];
 					}
-					window.setInterval(checkVideo, 60000);
+					if (day == 4) {
+						$(".loading_spinner").hide();
+						$(".update_time").html(new Date($.now()));
+						window.setInterval(checkVideo, 60000);
+					}
 				},
 				error: function(jqXHR,status,error){
-					$(".loading_spinner").hide();
-					window.setInterval(checkVideo, 60000);
+					if (day == 4) {
+						$(".loading_spinner").hide();
+						$(".update_time").html(new Date($.now()));
+						window.setInterval(checkVideo, 60000);
+					}
 				}
 			});
-		};
+		}
 		</script>
 		<style>
 			body {
