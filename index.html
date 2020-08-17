@@ -37,14 +37,14 @@
 					if (day == 4) {
 						$(".loading_spinner").hide();
 						$(".update_time").html(new Date($.now()));
-						window.setInterval(checkVideo, 60000);
+						window.setInterval(checkVideos, 60000);
 					}
 				},
 				error: function(jqXHR,status,error){
 					if (day == 4) {
 						$(".loading_spinner").hide();
 						$(".update_time").html(new Date($.now()));
-						window.setInterval(checkVideo, 60000);
+						window.setInterval(checkVideos, 60000);
 					}
 				}
 			});
